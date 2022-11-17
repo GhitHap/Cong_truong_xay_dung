@@ -1,0 +1,68 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (moHinhPhanCap.vcxproj, Project2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Source.cpp
+E:\New folder\Cong_truong_xay_dung\code_me\include\vector_matrix.h(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(233,63): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(233,40): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(233,111): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(233,104): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(233,97): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(241,69): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(241,60): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(241,51): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(249,42): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(249,33): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(249,24): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(254,62): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(254,41): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(259,37): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(264,50): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(264,32): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(264,83): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(272,60): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(272,49): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(272,36): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(272,93): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(280,61): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(280,49): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(280,36): warning C4244: 'argument': conversion from 'GLdouble' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(280,94): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(288,65): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(288,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(295,65): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(295,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(304,67): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(304,81): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(586,98): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(610,58): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(613,24): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(613,30): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(615,85): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(615,71): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(615,39): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(616,84): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(616,71): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(616,39): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(617,81): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(617,67): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(617,35): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(618,80): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(618,67): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(618,35): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(619,70): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(619,57): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(619,25): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(620,71): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(620,57): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(620,25): warning C4244: 'argument': conversion from 'GLdouble' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(641,31): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(642,31): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(643,33): warning C4305: 'argument': truncation from 'double' to 'float'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(715,12): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(720,12): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(730,10): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(741,10): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(808,21): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(817,21): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(826,20): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+E:\New folder\Cong_truong_xay_dung\code_me\Source.cpp(832,20): warning C4305: '-=': truncation from 'double' to 'GLfloat'
+  code_me.vcxproj -> E:\New folder\Cong_truong_xay_dung\x64\Debug\code_me.exe

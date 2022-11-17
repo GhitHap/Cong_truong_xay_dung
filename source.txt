@@ -1,0 +1,719 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+
+#include <vector_matrix.h>
+
+using namespace std;
+
+typedef struct
+{
+	float XYZW[4];
+	float RGBA[4];
+} Vertex;
+
+//    v6----- v5
+//   /|      /|
+//  v1------v0|
+//  | |     | |
+//  | |v7---|-|v4
+//  |/      |/
+//  v2------v3
+
+
+Vertex Vertices[] =
+{
+	// v0-v1-v2 (front)
+	{ { 0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	// v2-v3-v0
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,	0.5f,	1.0f },{ 1.0f,	0.0f,	0.0f,	1.0f } },
+
+	// v0-v3-v4 (right)
+	{ { 0.5f,	 0.5f,	 0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,   0.5f,1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,  -0.5f,1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	// v4-v5-v0
+	{ { 0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	 0.5f,   0.5f,1.0f },{ 0.0f,	1.0f,	0.0f,	1.0f } },
+
+	// v0-v5-v6 (top)
+	{ { 0.5f,	 0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	0.5f,	-0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	 -0.5f, 1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	// v6-v1-v0
+	{ { -0.5f,	 0.5f,	 -0.5f,1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	0.5f,	 0.5f,	1.0f },{ 0.0f,	0.0f,	1.0f,	1.0f } },
+
+	// v1-v6-v7 (left)
+	{ { -0.5f,	 0.5f,	 0.5f,	1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	-0.5f,	1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	 -0.5f,1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+	// v7-v2-v1
+	{ { -0.5f,	-0.5f,	 -0.5f,1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	 0.5f,	1.0f },{ 1.0f,	1.0f,	1.0f,	1.0f } },
+
+	// v7-v4-v3 (bottom)
+	{ { -0.5f,	-0.5f,	-0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,	-0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,	 0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+	// v3-v2-v7
+	{ { 0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	-0.5f,	1.0f },{ 1.0f,	1.0f,	0.0f,	1.0f } },
+
+	// v4-v7-v6 (back)
+	{ { 0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	-0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } },
+	{ { -0.5f,	0.5f,	-0.5f,	1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } },
+	// v6-v5-v4
+	{ { -0.5f,	 0.5f,	 -0.5f,1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	0.5f,	 -0.5f,1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } },
+	{ { 0.5f,	-0.5f,	 -0.5f,1.0f },{ 0.0f,	1.0f,	1.0f,	1.0f } }
+};
+
+
+const size_t BufferSize = sizeof(Vertices);
+const size_t VertexSize = sizeof(Vertices[0]);
+const size_t RgbOffset = sizeof(Vertices[0].XYZW);
+
+int
+CurrentWidth = 700,
+CurrentHeight = 700;
+
+GLuint
+VaoId,
+VboId,
+ColorBufferId,
+VertexShaderId,
+FragmentShaderId,
+ProgramId;
+
+mat4 model_mat_cpp;
+mat4 instance;
+int model_location;
+GLfloat theta[] = {0, 0, 0, 0, 0, 0, 0, 0};
+GLdouble x_thung = 0.8, y_thung = 0.01, z_thung = 0.3, x_dau = 0.4, y_dau = 0.5,
+z_dau = 0.3, banh_xe = 0.05, y_khung = 0.03, x_khung = 0.1;
+
+// ------------------------------------------
+string ReadShaderSourceFile(string fileName) {
+	fstream reader(fileName.c_str());
+	string line;
+	string code = "";
+	while (getline(reader, line)) {
+		code += line + "\n";
+	}
+	reader.close();
+	return code;
+}
+
+// ------------------------------------------
+void CreatVaoVbo()
+{
+	glGenVertexArrays(1, &VaoId);
+	glBindVertexArray(VaoId);
+
+	glGenBuffers(1, &VboId);
+	glBindBuffer(GL_ARRAY_BUFFER, VboId);
+	glBufferData(GL_ARRAY_BUFFER, BufferSize, Vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, VertexSize, 0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, VertexSize, (GLvoid*)RgbOffset);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+}
+// ------------------------------------------
+void CreatShaders()
+{
+	string vertexSrc = ReadShaderSourceFile("./vs.shader");
+	string fragmentSrc = ReadShaderSourceFile("./fs.shader");
+
+	const GLchar* VertexShader = vertexSrc.c_str();
+	const GLchar* FragmentShader = fragmentSrc.c_str();
+
+	VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(VertexShaderId, 1, &VertexShader, NULL);
+	glCompileShader(VertexShaderId);
+
+	FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(FragmentShaderId, 1, &FragmentShader, NULL);
+	glCompileShader(FragmentShaderId);
+
+	ProgramId = glCreateProgram();
+	glAttachShader(ProgramId, VertexShaderId);
+	glAttachShader(ProgramId, FragmentShaderId);
+	glLinkProgram(ProgramId);
+	glUseProgram(ProgramId);
+}
+// ------------------------------------------
+void CloseFunc()
+{
+	glUseProgram(0);
+
+	glDetachShader(ProgramId, VertexShaderId);
+	glDetachShader(ProgramId, FragmentShaderId);
+
+	glDeleteShader(FragmentShaderId);
+	glDeleteShader(VertexShaderId);
+
+	glDeleteProgram(ProgramId);
+
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &VboId);
+
+	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &VaoId);
+}
+
+void Banhxe(GLfloat a, GLfloat b, GLfloat c, int x)
+{
+	instance = translate(vec3(a, b, c)) * scale(vec3(0.1, 0.15, 0.1)) * rotate_z(x);
+	mat4 model_banhxe = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_banhxe.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+}
+
+void khung(GLfloat a, GLfloat b, GLfloat c)
+{
+	instance = translate(vec3(a, b, c)) * scale(vec3(x_thung, y_khung, z_thung));
+	mat4 model_khung = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_khung.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void truc_nang(GLfloat a)
+{
+	instance = rotate_z(a) * scale(vec3(x_thung - 0.3, y_khung, z_thung));
+	mat4 model_truc_nang = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_truc_nang.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+
+void thung1()
+{
+
+	instance = scale(vec3(x_thung, y_thung, z_thung));
+	mat4 model_thung_day = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_thung_day.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36); //thung day
+
+	instance = translate(vec3(0, y_dau / 2 - y_dau / 5, z_thung / 2)) * rotate_x(90) * instance;
+	mat4 model_thung_trai = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_thung_trai.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36); //thung mat trai
+
+	instance = translate(vec3(0, y_dau - z_thung / 1.5, 0)) * rotate_x(180) * instance;
+	mat4 model_thung_phai = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_thung_phai.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36); // thung mat phai
+
+	instance = scale(vec3(x_thung * 1.5, 1, z_thung * 1.3)) * translate(vec3(x_thung / 1.65, 0, 0)) * rotate_y(90) * instance;
+	mat4 model_thung_trc = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_thung_trc.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36); // thung mat truoc
+
+
+}
+
+void dauxe()
+{
+	instance = translate(vec3(x_thung / 2 + x_dau / 2, y_dau / 2 - y_thung / 2, 0.0)) * scale(vec3(x_dau, y_dau, z_dau));
+	mat4 model_dau_xe = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_dau_xe.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void cuaxetrai()
+{
+	instance = translate(vec3(x_thung / 1.4, y_dau / 2, z_dau / 2)) * scale(vec3(0.2, 0.2, 0.01));
+	mat4 model_cua_trai = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_cua_trai.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void cuaxephai()
+{
+	instance = translate(vec3(x_thung / 1.4, y_dau / 2, -z_dau / 2)) * scale(vec3(0.2, 0.2, 0.01));
+	mat4 model_cua_phai = model_mat_cpp * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_cua_phai.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+GLfloat i = 0;
+
+
+mat4 instance_ban;
+mat4 Model;
+//0.65f, -0.032f, 0.0f
+GLfloat a = 0.65f;
+GLfloat b = -0.032f;
+GLfloat c = 0.0f;
+void than(GLfloat w, GLfloat l, GLfloat h)
+{
+	instance = scale(vec3(w, l, h));
+	mat4 model_than = Model * instance_ban * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_than.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+void dau(GLfloat w, GLfloat h)
+{
+	instance = scale(vec3(w, h, w));
+	mat4 model_dau = Model * instance_ban * instance;
+	glUniformMatrix4fv(model_location, 1, GL_FALSE, model_dau.m);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void than3()
+{
+	// 1
+	instance_ban = translate(vec3(0.05f, 0.05f, -0.05f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.05f, 0.05f, -0.05f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.05f, 0.05f, 0.06f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.05f, 0.05f, 0.06f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	// 2
+	instance_ban = translate(vec3(0.15f, 0.05f, -0.05f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.15f, 0.05f, -0.05f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.15f, 0.05f, 0.06f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.15f, 0.05f, 0.06f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	// 3
+	instance_ban = translate(vec3(0.25f, 0.05f, -0.05f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.25f, 0.05f, -0.05f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.25f, 0.05f, 0.06f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.25f, 0.05f, 0.06f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	// 4
+	instance_ban = translate(vec3(0.35f, 0.05f, -0.05f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.35f, 0.05f, -0.05f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.35f, 0.05f, 0.06f)) * rotate_z(45);
+	than(0.13f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.35f, 0.05f, 0.06f)) * rotate_z(-45);
+	than(0.13f, 0.02f, 0.02f);
+	// 5
+	instance_ban = translate(vec3(0.45f, 0.04f, -0.05f)) * rotate_z(45);
+	than(0.11f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.45f, 0.04f, -0.05f)) * rotate_z(-45);
+	than(0.11f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.45f, 0.04f, 0.06f)) * rotate_z(45);
+	than(0.11f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.45f, 0.04f, 0.06f)) * rotate_z(-45);
+	than(0.11f, 0.02f, 0.02f);
+	// 6
+	instance_ban = translate(vec3(0.55f, 0.03f, -0.05f)) * rotate_z(45);
+	than(0.09f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.55f, 0.03f, -0.05f)) * rotate_z(-45);
+	than(0.09f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.55f, 0.03f, 0.06f)) * rotate_z(45);
+	than(0.09f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.55f, 0.03f, 0.06f)) * rotate_z(-45);
+	than(0.09f, 0.02f, 0.02f);
+	// 7
+	instance_ban = translate(vec3(0.65f, 0.03f, -0.05f)) * rotate_z(45);
+	than(0.08f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.65f, 0.03f, -0.05f)) * rotate_z(-45);
+	than(0.08f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.65f, 0.03f, 0.06f)) * rotate_z(45);
+	than(0.08f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.65f, 0.03f, 0.06f)) * rotate_z(-45);
+	than(0.08f, 0.02f, 0.02f);
+	// 8
+	instance_ban = translate(vec3(0.75f, 0.03f, -0.05f)) * rotate_z(45);
+	than(0.07f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.75f, 0.03f, -0.05f)) * rotate_z(-45);
+	than(0.07f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.75f, 0.03f, 0.06f)) * rotate_z(45);
+	than(0.07f, 0.02f, 0.02f);
+	instance_ban = translate(vec3(0.75f, 0.03f, 0.06f)) * rotate_z(-45);
+	than(0.07f, 0.02f, 0.02f);
+	//
+}
+void can()
+{// dau
+	instance_ban = translate(vec3(0.35f, 0.0f, -0.05f));
+	than(1.3f, 0.01f, 0.02f);
+	instance_ban = translate(vec3(0.35f, 0.0f, 0.05f));
+	than(1.3f, 0.01f, 0.02f);
+	//
+
+	// vach ngan
+	instance_ban = rotate_z(-5) * translate(vec3(0.5f, 0.122f, -0.05f));
+	than(1.0f, 0.01f, 0.02f);
+	instance_ban = rotate_z(-5) * translate(vec3(0.5f, 0.122f, 0.05f));
+	than(1.0f, 0.01f, 0.02f);
+
+	//
+	instance_ban = rotate_z(15) * translate(vec3(-0.11f, 0.12f, -0.05f));
+	than(0.3f, 0.01f, 0.02f);
+	instance_ban = rotate_z(15) * translate(vec3(-0.11f, 0.12f, 0.05f));
+	than(0.3f, 0.01f, 0.02f);
+	instance_ban = translate(vec3(-0.25f, 0.05f, 0.0f));
+	than(0.1f, 0.1f, 0.2f);
+	instance_ban = translate(vec3(-0.35f, 0.05f, 0.0f));
+	than(0.1f, 0.1f, 0.2f);
+	instance_ban = translate(vec3(0.0f, 0.05f, 0.0f));
+	than(0.05f, 0.05f, 0.1f);
+	instance_ban = translate(vec3(0.0f, 0.2f, 0.0f));
+	dau(0.03f, 0.3f);
+
+	//
+	instance_ban = translate(vec3(-0.2f, 0.18f, 0.0f)) * rotate_z(-50);
+	than(0.01f, 0.5f, 0.01f);
+	instance_ban = translate(vec3(0.48f, 0.18f, 0.0f)) * rotate_z(72);
+	than(0.01f, 1.05f, 0.01f);
+	//
+
+	instance_ban = translate(vec3(0.5f, 0.04f, 0.0f));
+	than(0.01f, 0.08f, 0.15f);
+
+	instance_ban = translate(vec3(0.6f, 0.04f, 0.0f));
+	than(0.01f, 0.07f, 0.15f);
+
+	instance_ban = translate(vec3(0.7f, 0.036f, 0.0f));
+	than(0.01f, 0.06f, 0.15f);
+
+	instance_ban = translate(vec3(0.8f, 0.03f, 0.0f));
+	than(0.01f, 0.05f, 0.15f);
+
+	instance_ban = translate(vec3(0.9f, 0.028f, 0.0f));
+	than(0.01f, 0.04f, 0.15f);
+	//
+	instance_ban = translate(vec3(0.1f, 0.06f, 0.0f));
+	than(0.01f, 0.1f, 0.15f);
+
+	instance_ban = translate(vec3(0.2f, 0.05f, 0.0f));
+	than(0.01f, 0.1f, 0.15f);
+
+	instance_ban = translate(vec3(0.3f, 0.05f, 0.0f));
+	than(0.01f, 0.09f, 0.15f);
+
+	instance_ban = translate(vec3(0.4f, 0.05f, 0.0f));
+	than(0.01f, 0.085f, 0.15f);
+
+	instance_ban = translate(vec3(0.01f, 0.062f, 0.0f));
+	than(0.01f, 0.12f, 0.15f);
+
+	// dau can
+	instance_ban = translate(vec3(1.0f, 0.02f, 0.0f));
+	than(0.05f, 0.04f, 0.1f);
+	//
+	instance_ban = translate(vec3(0.1f, 0.0f, 0.0f));
+	dau(0.017f, 0.08f);
+	instance_ban = translate(vec3(1.0f, 0.0f, 0.0f));
+	dau(0.017f, 0.08f);
+	instance_ban = translate(vec3(0.55f, -0.032f, 0.0f));
+	than(0.9f, 0.017f, 0.017f);
+}
+void t1()
+{
+	// than 1: 
+	instance_ban = identity_mat4();
+	instance_ban = translate(vec3(0.0f, -0.1f, 0.0f));
+	than(0.15f, 0.02f, 0.15f);
+	instance_ban = translate(vec3(0.0f, -0.2f, 0.0f));
+	dau(0.03f, 0.5f);
+	instance_ban = translate(vec3(0.0f, -0.4f, 0.0f));
+	dau(0.15f, 0.02f);
+	//
+	instance_ban = translate(vec3(0.07f, -0.25f, 0.05f));
+	than(0.01f, 0.3f, 0.01f);
+	instance_ban = rotate_z(-25) * translate(vec3(0.1f, -0.22f, 0.05f));
+	than(0.01f, 0.32f, 0.01f);
+
+	instance_ban = translate(vec3(-0.07f, -0.25f, 0.05f));
+	than(0.01f, 0.3f, 0.01f);
+	instance_ban = rotate_z(25) * translate(vec3(-0.1f, -0.22f, 0.05f));
+	than(0.01f, 0.32f, 0.01f);
+
+	instance_ban = translate(vec3(0.07f, -0.25f, -0.05f));
+	than(0.01f, 0.3f, 0.01f);
+	instance_ban = rotate_z(-25) * translate(vec3(0.1f, -0.22f, -0.05f));
+	than(0.01f, 0.3f, 0.01f);
+
+	instance_ban = translate(vec3(-0.07f, -0.25f, -0.05f));
+	than(0.01f, 0.3f, 0.01f);
+	instance_ban = rotate_z(25) * translate(vec3(-0.1f, -0.22f, -0.05f));
+	than(0.01f, 0.3f, 0.01f);
+
+	//
+
+	instance_ban = translate(vec3(0.0f, -0.8f, 0.0f));
+	dau(0.17f, 0.8f);
+	instance_ban = translate(vec3(0.0f, -1.2f, 0.0f));
+	dau(0.3f, 0.05f);
+	//
+
+
+}
+void truot(GLfloat a, GLfloat b, GLfloat c)
+{
+
+	instance_ban = translate(vec3(a, b, c)); //0.65f, -0.032f, 0.0f
+	dau(0.05f, 0.05f);
+}
+void day()
+{
+	instance_ban = translate(vec3(0.65f, -0.45f, 0.0f));
+	dau(0.012f, 0.8f);
+}
+
+void DisplayFunc(void)
+{
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//xe
+	model_mat_cpp = rotate_y(theta[0]);
+
+	model_mat_cpp = model_mat_cpp * rotate_x(theta[2]);
+	model_mat_cpp = model_mat_cpp * rotate_z(theta[3]);
+	model_mat_cpp = model_mat_cpp * translate(vec3(theta[4], 0, 0));
+	dauxe();
+	//truc_nang(90);
+	khung(0.2, -(y_thung) / 2, 0);
+	for (int i = 1; i <= 90; i++) {
+		Banhxe(-(x_thung / 3) + x_thung / 2 + banh_xe, -(y_thung + banh_xe) / 2, -z_thung / 2, i); //banh phai giua
+		Banhxe(-(x_thung / 3) + x_thung / 2 + banh_xe, -(y_thung + banh_xe) / 2, z_thung / 2, i); //banh trai giua
+		Banhxe(-(x_thung / 3) + x_thung + banh_xe, -(y_thung + banh_xe) / 2, -z_thung / 2, i);
+		Banhxe(-(x_thung / 3) + x_thung + banh_xe, -(y_thung + banh_xe) / 2, z_thung / 2, i);
+		Banhxe(-(x_thung / 3) + banh_xe, -(y_thung + banh_xe) / 2, z_thung / 2, i); //banh trai sau
+		Banhxe(-(x_thung / 3) + banh_xe, -(y_thung + banh_xe) / 2, -z_thung / 2, i); //banh trai sau
+	}
+	cuaxetrai();
+	cuaxephai();
+	model_mat_cpp = model_mat_cpp * translate(vec3(-i / 2, 2 * i, 0)) * rotate_z(theta[1]);
+	thung1();
+
+
+	//can cau
+	Model = translate(vec3(0.5f, 1.1f, 0.0f));/*rotate_x(-30) * rotate_y(30) * */
+	t1();
+	Model = Model * rotate_y(theta[6]);
+	can();
+	than3();
+	Model = Model * translate(vec3(theta[1], 0.0, 0.0));
+	truot(0.65f, -0.032f, 0.0f);
+	Model = Model * scale(vec3(1.0, theta[5], 1.0));
+	day();
+
+	/*
+	point4 eye(radius * sin(theta2) * cos(phi),
+		radius * sin(theta2) * sin(phi),
+		radius * cos(theta2),
+		1.0);
+	//point4 eye(0.5, 1, 1.5, 1);
+	point4 at(0.0, 0.0, 0.0, 1.0);
+	vec4 up(0.0, 1.0, 0.0, 1.0);
+
+	mat4 mv = LookAt(eye, at, up);
+	glUniformMatrix4fv(model_view_loc, 1, GL_TRUE, mv);
+
+	mat4 p = Frustum(l, r, bottom, top, zNear, zFar);
+	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, p);
+	//glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
+	glDrawArrays(GL_TRIANGLES, 0, NumPoints);    /*Vẽ các tam giác*/
+
+	//const vec3 viewer_pos(0.0, 0.0, 2.0);  /*Trùng với eye của camera*/
+
+	//glUniformMatrix4fv(model_loc, 1, GL_TRUE, model); */
+
+	glutSwapBuffers();
+}
+
+void ReshapeFunc(int Width, int Height)
+{
+	CurrentWidth = Width;
+	CurrentHeight = Height;
+}
+// ---------------------------------------------------------------------------	
+void IdleFunc(void)
+{
+	glutPostRedisplay();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+	// keyboard handler
+	switch (key) {
+	case 033: // Escape Key
+	case 'q': case 'Q':
+		exit(EXIT_SUCCESS);
+		break;
+
+	case 'a':
+		theta[0] += 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'A':
+		// một số lệnh 
+		theta[0] -= 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'b':
+		theta[2] += 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'B':
+		// một số lệnh 
+		theta[2] -= 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'c':
+		theta[3] += 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'C':
+		// một số lệnh 
+		theta[3] -= 5;
+		if (theta[0] > 360) theta[0] -= 360;
+		glutPostRedisplay();
+		break;
+
+	case 'd':
+		theta[4] += 0.05;
+		glutPostRedisplay();
+		break;
+	case 'D':
+		// một số lệnh 
+		theta[4] -= 0.05;
+
+		glutPostRedisplay();
+		break;
+
+	case 'u':
+		// một số lệnh 
+		if (theta[1] < 30)
+		{
+			theta[1] += 5;
+			i = i + 0.01;
+		}
+		else {}
+		glutPostRedisplay();
+		break;
+	case 'U':
+		// một số lệnh 
+
+		if (theta[1] > 0)
+		{
+			theta[1] -= 5;
+			i = i - 0.01;
+		}
+		glutPostRedisplay();
+		break;
+
+	
+	case ' ':
+		theta[0] = 0;
+		theta[1] = 0;
+		theta[2] = 0;
+		theta[3] = 0;
+		theta[4] = 0;
+		theta[5] = 0;
+		i = 0;
+		break;
+		// dieu khien can cau
+	case 'm':
+		theta[6] += 0.5;
+		if (theta[6] > 360) theta[6] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'M':
+		// một số lệnh
+		theta[6] -= 0.5;
+		if (theta[6] > 360) theta[6] -= 360;
+		glutPostRedisplay();
+		break;
+	case 'n':
+		// một số lệnh
+		theta[1] += 0.005;
+		if (theta[1] > 0.5)
+		{
+			break;
+		}
+		glutPostRedisplay();
+		break;
+	case 'N':
+		// một số lệnh
+		theta[1] += -0.005;
+		if (theta[1] > 0.5)
+		{
+			break;
+		}
+		glutPostRedisplay();
+		break;
+	case 'k':
+		// một số lệnh
+		theta[5] += 0.01;
+		if (theta[5] > 1.5) theta[5] -= 0;
+		glutPostRedisplay();
+		break;
+	case 'K':
+		// một số lệnh
+		theta[5] -= 0.01;
+		if (theta[5] > 1.5) theta[5] = 0;
+		glutPostRedisplay();
+		break;
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();
+}
+
+int main(int argc, char* argv[])
+{
+	glutInit(&argc, argv);
+	glutInitContextVersion(4, 0);
+	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+	glutInitContextProfile(GLUT_CORE_PROFILE);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	glutInitWindowSize(CurrentWidth, CurrentHeight);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutCreateWindow("Robot Arm");
+
+	glewExperimental = GL_TRUE;
+	glewInit();
+
+	CreatVaoVbo();
+	CreatShaders();
+
+	glutDisplayFunc(DisplayFunc);
+	glutReshapeFunc(ReshapeFunc);
+	glutIdleFunc(IdleFunc);
+	glutKeyboardFunc(keyboard);
+	//glutMouseFunc(MouseFunc);
+	glutCloseFunc(CloseFunc);
+
+	glutMainLoop();
+	return 0;
+}

@@ -1,0 +1,5 @@
+﻿D:\VS Install\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Project2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Source.cpp
+F:\Ky4_phu\DHMT\Project_MoHinhPC\moHinhPhanCap\moHinhPhanCap\include\Vector_Matrix.h(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+F:\Ky4_phu\DHMT\Project_MoHinhPC\moHinhPhanCap\moHinhPhanCap\Source.cpp(202,75): warning C4305: 'argument': truncation from 'double' to 'float'
+  moHinhPhanCap.vcxproj -> F:\Ky4_phu\DHMT\Project_MoHinhPC\moHinhPhanCap\x64\Debug\moHinhPhanCap.exe
